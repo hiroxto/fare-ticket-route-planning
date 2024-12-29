@@ -1,4 +1,8 @@
+import { MantineProvider } from "@mantine/core";
+import { DatesProvider } from "@mantine/dates";
 import type { Metadata } from "next";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 import "./globals.scss";
 
 export const metadata: Metadata = {
@@ -13,7 +17,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ja">
-            <body>{children}</body>
+            <body>
+                <MantineProvider>
+                    <DatesProvider settings={{}}>{children}</DatesProvider>
+                </MantineProvider>
+            </body>
         </html>
     );
 }
