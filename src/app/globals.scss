@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: #ffffff;
+}
+
+.title-group {
+    @apply pb-4;
+}
+
+.title-group .title {
+    @apply text-4xl font-bold;
+}
+
+.title-group .description {
+    @apply text-xl font-normal;
+}
+
+
+.app {
+    @apply p-4;
+}
+
+.section-title {
+    @apply text-2xl my-2;
+}
