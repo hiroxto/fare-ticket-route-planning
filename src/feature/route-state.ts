@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type { Route, TicketType } from "~/types";
 
-interface State {
+interface RouteState {
     type: TicketType;
     month: string;
     day: string;
@@ -40,11 +40,14 @@ interface Action {
     // 備考
     setNotes: (notes: string) => void;
     resetNotes: () => void;
+
+    // その他機能
+    reconstruct: (state: Partial<RouteState>) => void;
 }
 
 export const createRoute = (): Route => ({ id: crypto.randomUUID(), line: "", station: "" });
 
-export const useRouteState = create<State & Action>()(
+export const useRouteState = create<RouteState & Action>()(
     devtools(
         persist(
             set => {
@@ -175,6 +178,11 @@ export const useRouteState = create<State & Action>()(
                     },
                     resetNotes() {
                         set({ notes: "" });
+                    },
+
+                    // 機能
+                    reconstruct(state) {
+                        set(state);
                     },
                 };
             },
