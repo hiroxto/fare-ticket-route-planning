@@ -6,7 +6,7 @@ export interface RouteState {
     type: TicketType;
     month: string;
     day: string;
-    dateOption: "use" | "skip" | "undefined";
+    dateOption: "use" | "skip";
     departure: string;
     via: string; // 将来的に連続乗車券で使う
     destination: string;
