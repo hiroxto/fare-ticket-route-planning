@@ -29,7 +29,7 @@
     "devDependencies": {
         "@biomejs/biome": "^1.9.4",
         "@cloudflare/next-on-pages": "^1.13.7",
-        "@types/node": "^20",
+        "@types/node": "^22.0.0",
         "@types/react": "^19",
         "@types/react-dom": "^19",
         "postcss": "^8.4.49",
