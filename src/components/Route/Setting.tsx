@@ -1,4 +1,3 @@
-import assert from "node:assert";
 import { useRouteState } from "@/feature/route-state";
 import { useSavedRouteState } from "@/feature/saved-route";
 import { isTicketType } from "@/lib/utils";
@@ -165,7 +164,10 @@ export default function Setting() {
                         className="button"
                         disabled={saveToID == null}
                         onClick={() => {
-                            assert(saveToID != null);
+                            if (saveToID == null) {
+                                return;
+                            }
+
                             updateRoute(saveToID, {
                                 type: type,
                                 month: month,
