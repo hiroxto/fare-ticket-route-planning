@@ -71,9 +71,6 @@ export default function Route() {
                 <Button variant="filled" color="red" className="button" onClick={deleteAllRoutes}>
                     全経路クリア
                 </Button>
-                <p className="text-base">
-                    Tips: 任意の経路でShift+Enterを押すと下に経路追加，最後の経路でTabを押すと最後に経路追加
-                </p>
             </div>
         </>
     );
