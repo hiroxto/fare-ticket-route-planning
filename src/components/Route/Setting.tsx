@@ -60,12 +60,22 @@ export default function Setting() {
                         <div className="grid grid-cols-2 w-3/4">
                             <div className="col-span-1">
                                 <Input.Wrapper label="利用開始月">
-                                    <Input placeholder="月" value={month} onChange={e => setMonth(e.target.value)} />
+                                    <Input
+                                        placeholder="月"
+                                        value={month}
+                                        onChange={e => setMonth(e.target.value)}
+                                        disabled={dateOption !== "use"}
+                                    />
                                 </Input.Wrapper>
                             </div>
                             <div className="col-span-1">
                                 <Input.Wrapper label="利用開始日">
-                                    <Input placeholder="日" value={day} onChange={e => setDay(e.target.value)} />
+                                    <Input
+                                        placeholder="日"
+                                        value={day}
+                                        onChange={e => setDay(e.target.value)}
+                                        disabled={dateOption !== "use"}
+                                    />
                                 </Input.Wrapper>
                             </div>
                         </div>
