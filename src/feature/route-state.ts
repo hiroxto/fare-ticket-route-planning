@@ -92,7 +92,7 @@ export const useRouteState = create<RouteState & Action>()(
                         });
                     },
                     useDate() {
-                        set({ dateOption: "use", month: "", day: "" });
+                        set({ dateOption: "use" });
                     },
                     skipDate() {
                         set({ dateOption: "skip", month: "", day: "" });
