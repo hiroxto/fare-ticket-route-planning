@@ -29,7 +29,7 @@ export default function Route() {
     const [useComplete, setUseComplete] = useState<boolean>(true);
     const getLineCompletes = (index: number) => {
         if (index === 0) {
-            return lineToStations.keys().toArray();
+            return stationToLines.get(departure) ?? lineToStations.keys().toArray();
         }
 
         const lines = stationToLines.get(routes[index - 1].station) ?? [];
