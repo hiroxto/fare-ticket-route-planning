@@ -55,7 +55,9 @@ export default function Output() {
             <div className="col-span-10">
                 <h2 className="section-title">出力</h2>
 
-                <pre className="bg-gray-100 p-5 rounded-md w-10/12">{output}</pre>
+                <pre className="bg-gray-100 p-5 rounded-md w-10/12 whitespace-pre">
+                    <span className="whitespace-pre-wrap">{output}</span>
+                </pre>
             </div>
             <div className="col-span-2">
                 <CopyButton value={output}>

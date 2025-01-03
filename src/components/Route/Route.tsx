@@ -1,6 +1,8 @@
 import { useRouteState } from "@/feature/route-state";
-import { Button, CloseButton, Input } from "@mantine/core";
+import { lineToStations, stationToLines } from "@/lib/route-complete";
+import { Autocomplete, Button, CloseButton, Group, Input } from "@mantine/core";
 import type React from "react";
+import { useState } from "react";
 
 export default function Route() {
     const routes = useRouteState(state => state.routes);
@@ -23,6 +25,17 @@ export default function Route() {
             addRoute(-1);
         }
     };
+    const [useComplete, setUseComplete] = useState<boolean>(true);
+    const getLineCompletes = (index: number) => {
+        if (index === 0) {
+            return lineToStations.keys().toArray();
+        }
+
+        const lines = stationToLines.get(routes[index - 1].station) ?? [];
+        const prevLine = routes[index - 1].line;
+
+        return lines.filter(s => s !== prevLine);
+    };
 
     return (
         <>
@@ -35,24 +48,55 @@ export default function Route() {
                                 <p>経路{index + 1}</p>
                             </div>
                             <div className="col-span-5">
-                                <Input.Wrapper label="線区" className="w-3/4">
-                                    <Input
-                                        placeholder="線区"
+                                {useComplete && (
+                                    <Autocomplete
+                                        label="路線"
+                                        placeholder="路線"
+                                        className="w-3/4"
                                         value={route.line}
-                                        onChange={e => updateLine(index, e.target.value)}
+                                        data={getLineCompletes(index)}
+                                        onChange={e => updateLine(index, e)}
                                         onKeyDown={e => handleKeyDown(index, e)}
                                     />
-                                </Input.Wrapper>
+                                )}
+                                {!useComplete && (
+                                    <Input.Wrapper label="路線" className="w-3/4">
+                                        <Input
+                                            placeholder="路線"
+                                            value={route.line}
+                                            onChange={e => updateLine(index, e.target.value)}
+                                            onKeyDown={e => handleKeyDown(index, e)}
+                                        />
+                                    </Input.Wrapper>
+                                )}
                             </div>
                             <div className="col-span-5">
-                                <Input.Wrapper label="接続駅" className="w-3/4">
-                                    <Input
+                                {useComplete && (
+                                    <Autocomplete
+                                        label="接続駅"
                                         placeholder="接続駅"
+                                        className="w-3/4"
                                         value={route.station}
-                                        onChange={e => updateStation(index, e.target.value)}
+                                        data={lineToStations.get(route.line) ?? []}
+                                        onChange={e => {
+                                            updateStation(index, e);
+                                            if (e.trim() !== "" && index === routes.length - 1) {
+                                                addRoute(-1);
+                                            }
+                                        }}
                                         onKeyDown={e => handleKeyDown(index, e)}
                                     />
-                                </Input.Wrapper>
+                                )}
+                                {!useComplete && (
+                                    <Input.Wrapper label="接続駅" className="w-3/4">
+                                        <Input
+                                            placeholder="接続駅"
+                                            value={route.station}
+                                            onChange={e => updateStation(index, e.target.value)}
+                                            onKeyDown={e => handleKeyDown(index, e)}
+                                        />
+                                    </Input.Wrapper>
+                                )}
                             </div>
                             <div className="col-span-1">
                                 <CloseButton onClick={() => deleteRoute(index)} tabIndex={-1} />
@@ -70,6 +114,14 @@ export default function Route() {
                 </Button>
                 <Button variant="filled" color="red" className="button" onClick={deleteAllRoutes}>
                     全経路クリア
+                </Button>
+                <Button
+                    variant="filled"
+                    color={useComplete ? "gray" : "blue"}
+                    className="button"
+                    onClick={() => setUseComplete(!useComplete)}
+                >
+                    {useComplete ? "補完無効化" : "補完有効化"}
                 </Button>
             </div>
         </>
