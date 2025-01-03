@@ -164,7 +164,7 @@ export const useRouteState = create<RouteState & Action>()(
                             return {
                                 departure: state.destination,
                                 destination: state.departure,
-                                routes: newRoute,
+                                routes: newRoute.length === 0 ? [createRoute()] : newRoute,
                             };
                         });
                     },
