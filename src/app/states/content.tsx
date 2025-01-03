@@ -69,7 +69,7 @@ export default function Content() {
                             <Table.Th>
                                 <Checkbox
                                     size="xs"
-                                    checked={isAllSelected}
+                                    checked={selectedRouteIds.length > 0 && isAllSelected}
                                     indeterminate={selectedRouteIds.length > 0 && !isAllSelected}
                                     aria-label={isAllSelected ? "全選択解除" : "全選択"}
                                     onChange={e =>
