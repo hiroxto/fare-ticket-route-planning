@@ -57,7 +57,12 @@ export default function Route() {
                                     className="w-3/4"
                                     value={route.station}
                                     data={lineToStations.get(route.line) ?? []}
-                                    onChange={e => updateStation(index, e)}
+                                    onChange={e => {
+                                        updateStation(index, e);
+                                        if (e.trim() !== "" && index === routes.length - 1) {
+                                            addRoute(-1);
+                                        }
+                                    }}
                                     onKeyDown={e => handleKeyDown(index, e)}
                                 />
                             </div>
