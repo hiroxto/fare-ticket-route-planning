@@ -1,11 +1,13 @@
 import { useRouteState } from "@/feature/route-state";
 import { useSavedRouteState } from "@/feature/saved-route";
 import { isTicketType } from "@/lib/utils";
-import { Button, Input, Modal, Select } from "@mantine/core";
+import { Button, Grid, Input, Modal, Select } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import React, { useState } from "react";
 import type { TicketType } from "~/types";
+import "dayjs/locale/ja";
 
 export default function Setting() {
     const type = useRouteState(state => state.type);
@@ -32,7 +34,9 @@ export default function Setting() {
     const saveRoute = useSavedRouteState(state => state.saveRoute);
     const updateRoute = useSavedRouteState(state => state.updateRoute);
     const ticketTypes: TicketType[] = ["片道乗車券", "往復乗車券", "連続乗車券", "別線往復乗車券"];
-    const [opened, { open, close }] = useDisclosure(false);
+    const [isOpenedCalenderModel, { open: openCalenderModal, close: closeCalenderModal }] = useDisclosure(false);
+    const [calendarValue, setCalendarValue] = useState<Date | null>(null);
+    const [isOpenedSaveModel, { open: openSaveModal, close: closeSaveModal }] = useDisclosure(false);
 
     return (
         <>
@@ -106,6 +110,9 @@ export default function Setting() {
                 <Button variant="filled" color="gray" className="button" onClick={() => setDateWithIndex(2)}>
                     明後日
                 </Button>
+                <Button variant="filled" color="gray" className="button" onClick={openCalenderModal}>
+                    カレンダー入力
+                </Button>
                 <Button variant="filled" color="gray" className="button" onClick={useDate}>
                     利用日表示
                 </Button>
@@ -130,10 +137,35 @@ export default function Setting() {
                 <Button variant="filled" color="blue" className="button" component={Link} href="/states">
                     保存済み経路
                 </Button>
-                <Button variant="filled" color="blue" className="button" onClick={open}>
+                <Button variant="filled" color="blue" className="button" onClick={openSaveModal}>
                     保存・更新
                 </Button>
-                <Modal opened={opened} onClose={close} title="保存・更新">
+
+                <Modal opened={isOpenedCalenderModel} onClose={closeCalenderModal} title="カレンダー入力" size="auto">
+                    <DatePicker
+                        value={calendarValue}
+                        onChange={newValue => {
+                            if (
+                                calendarValue !== null &&
+                                newValue !== null &&
+                                calendarValue?.getMonth() === newValue?.getMonth() &&
+                                calendarValue?.getDay() === newValue?.getDay()
+                            ) {
+                                setMonth(String(newValue.getMonth() + 1));
+                                setDay(String(newValue.getDate()));
+                                closeCalenderModal();
+                            }
+
+                            setCalendarValue(newValue);
+                        }}
+                        firstDayOfWeek={0}
+                        locale="ja"
+                        level="month"
+                        minDate={new Date()}
+                        size="xl"
+                    />
+                </Modal>
+                <Modal opened={isOpenedSaveModel} onClose={closeSaveModal} title="保存・更新">
                     <Button
                         variant="filled"
                         color="blue"
@@ -152,7 +184,7 @@ export default function Setting() {
                                 notes: notes,
                             });
                             setSaveToID(null);
-                            close();
+                            closeSaveModal();
                         }}
                     >
                         新規保存
@@ -188,7 +220,7 @@ export default function Setting() {
                                 routes: routes,
                                 notes: notes,
                             });
-                            close();
+                            closeSaveModal();
                         }}
                     >
                         更新
