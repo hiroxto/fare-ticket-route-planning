@@ -12,6 +12,7 @@ export default function Route() {
     const deleteRoute = useRouteState(state => state.deleteRoute);
     const deleteEmptyRoutes = useRouteState(state => state.deleteEmptyRoutes);
     const deleteAllRoutes = useRouteState(state => state.deleteAllRoutes);
+    const departure = useRouteState(state => state.departure);
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         // 任意の行でShift+Enterを押した場合は下に経路追加
@@ -28,13 +29,19 @@ export default function Route() {
     const [useComplete, setUseComplete] = useState<boolean>(true);
     const getLineCompletes = (index: number) => {
         if (index === 0) {
-            return lineToStations.keys().toArray();
+            return stationToLines.get(departure) ?? lineToStations.keys().toArray();
         }
 
         const lines = stationToLines.get(routes[index - 1].station) ?? [];
         const prevLine = routes[index - 1].line;
 
         return lines.filter(s => s !== prevLine);
+    };
+    const getStationCompletes = (index: number) => {
+        const stations = lineToStations.get(routes[index].line) ?? [];
+        const excludeStation = index === 0 ? departure : routes[index - 1].station;
+
+        return stations.filter(s => s !== excludeStation);
     };
 
     return (
@@ -77,7 +84,7 @@ export default function Route() {
                                         placeholder="接続駅"
                                         className="w-3/4"
                                         value={route.station}
-                                        data={lineToStations.get(route.line) ?? []}
+                                        data={getStationCompletes(index)}
                                         onChange={e => {
                                             updateStation(index, e);
                                             if (e.trim() !== "" && index === routes.length - 1) {
