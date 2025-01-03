@@ -29,6 +29,7 @@ export interface Action {
     saveRoute: (route: RouteState) => void;
     updateRoute: (id: string, route: Partial<RouteState>) => void;
     deleteRoute: (id: string) => void;
+    bulkDeleteRoute: (ids: string[]) => void;
 }
 
 export const useSavedRouteState = create<State & Action>()(
@@ -66,6 +67,11 @@ export const useSavedRouteState = create<State & Action>()(
                     deleteRoute: id => {
                         set(state => ({
                             routes: [...state.routes.filter(route => route.id !== id)],
+                        }));
+                    },
+                    bulkDeleteRoute: ids => {
+                        set(state => ({
+                            routes: [...state.routes.filter(route => !ids.includes(route.id))],
                         }));
                     },
                 };
