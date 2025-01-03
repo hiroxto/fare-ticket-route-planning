@@ -3,7 +3,7 @@
 import { useRouteState } from "@/feature/route-state";
 import { type RouteState, useSavedRouteState } from "@/feature/saved-route";
 import { LikeMr52Formatter } from "@/lib/formatter";
-import { Button, Modal, Table } from "@mantine/core";
+import { Button, Checkbox, Group, Modal, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,7 @@ export default function Content() {
     const router = useRouter();
     const routes = useSavedRouteState(state => state.routes);
     const deleteRoute = useSavedRouteState(state => state.deleteRoute);
+    const bulkDeleteRoute = useSavedRouteState(state => state.bulkDeleteRoute);
     const reconstruct = useRouteState(state => state.reconstruct);
     const [opened, { open, close }] = useDisclosure(false);
     const [selectedRoute, setSelectedRoute] = useState<RouteState | null>(null);
@@ -30,6 +31,12 @@ export default function Content() {
         reconstruct(state);
         router.push("/");
     };
+    const [selectedRouteIds, setSelectedRouteIds] = useState<string[]>([]);
+    const allRouteIds = useMemo(() => routes.map(r => r.id), [routes]);
+    const isAllSelected = useMemo(
+        () => selectedRouteIds.length === allRouteIds.length,
+        [selectedRouteIds, allRouteIds],
+    );
 
     return (
         <div className="app">
@@ -37,14 +44,39 @@ export default function Content() {
                 <div className="title-group">
                     <h1 className="title">保存済み経路</h1>
                     <p className="description">保存した経路の一覧と操作</p>
-                    <Button variant="filled" color="blue" className="button" component={Link} href="/">
-                        入力画面
-                    </Button>
+                    <Group gap="xs">
+                        <Button variant="filled" color="blue" className="button" component={Link} href="/">
+                            入力画面
+                        </Button>
+                        <Button
+                            variant="filled"
+                            color="red"
+                            className="button"
+                            disabled={selectedRouteIds.length === 0}
+                            onClick={() => {
+                                bulkDeleteRoute(selectedRouteIds);
+                                setSelectedRouteIds([]);
+                            }}
+                        >
+                            削除
+                        </Button>
+                    </Group>
                 </div>
 
                 <Table striped highlightOnHover withTableBorder withColumnBorders>
                     <Table.Thead>
                         <Table.Tr>
+                            <Table.Th>
+                                <Checkbox
+                                    size="xs"
+                                    checked={selectedRouteIds.length > 0 && isAllSelected}
+                                    indeterminate={selectedRouteIds.length > 0 && !isAllSelected}
+                                    aria-label={isAllSelected ? "全選択解除" : "全選択"}
+                                    onChange={e =>
+                                        e.target.checked ? setSelectedRouteIds(allRouteIds) : setSelectedRouteIds([])
+                                    }
+                                ></Checkbox>
+                            </Table.Th>
                             <Table.Th>ID</Table.Th>
                             <Table.Th>保存日時</Table.Th>
                             <Table.Th>発駅</Table.Th>
@@ -58,6 +90,20 @@ export default function Content() {
                         {routes.map(route => {
                             return (
                                 <Table.Tr key={route.id}>
+                                    <Table.Td>
+                                        <Checkbox
+                                            aria-label="選択"
+                                            size="xs"
+                                            checked={selectedRouteIds.includes(route.id)}
+                                            onChange={event =>
+                                                setSelectedRouteIds(
+                                                    event.currentTarget.checked
+                                                        ? [...selectedRouteIds, route.id]
+                                                        : selectedRouteIds.filter(id => id !== route.id),
+                                                )
+                                            }
+                                        ></Checkbox>
+                                    </Table.Td>
                                     <Table.Td>{route.id}</Table.Td>
                                     <Table.Td>
                                         {new Date(route.createdAtTs).toLocaleDateString("ja-JP", {
