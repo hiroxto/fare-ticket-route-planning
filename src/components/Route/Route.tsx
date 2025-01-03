@@ -1,5 +1,6 @@
 import { useRouteState } from "@/feature/route-state";
-import { Button, CloseButton, Input } from "@mantine/core";
+import { lineToStations, stationToLines } from "@/lib/route-complete";
+import { Autocomplete, Button, CloseButton } from "@mantine/core";
 import type React from "react";
 
 export default function Route() {
@@ -35,24 +36,30 @@ export default function Route() {
                                 <p>経路{index + 1}</p>
                             </div>
                             <div className="col-span-5">
-                                <Input.Wrapper label="線区" className="w-3/4">
-                                    <Input
-                                        placeholder="線区"
-                                        value={route.line}
-                                        onChange={e => updateLine(index, e.target.value)}
-                                        onKeyDown={e => handleKeyDown(index, e)}
-                                    />
-                                </Input.Wrapper>
+                                <Autocomplete
+                                    label="路線"
+                                    placeholder="路線"
+                                    className="w-3/4"
+                                    value={route.line}
+                                    data={
+                                        index === 0
+                                            ? lineToStations.keys().toArray()
+                                            : (stationToLines.get(routes[index - 1].station) ?? [])
+                                    }
+                                    onChange={e => updateLine(index, e)}
+                                    onKeyDown={e => handleKeyDown(index, e)}
+                                />
                             </div>
                             <div className="col-span-5">
-                                <Input.Wrapper label="接続駅" className="w-3/4">
-                                    <Input
-                                        placeholder="接続駅"
-                                        value={route.station}
-                                        onChange={e => updateStation(index, e.target.value)}
-                                        onKeyDown={e => handleKeyDown(index, e)}
-                                    />
-                                </Input.Wrapper>
+                                <Autocomplete
+                                    label="接続駅"
+                                    placeholder="接続駅"
+                                    className="w-3/4"
+                                    value={route.station}
+                                    data={lineToStations.get(route.line) ?? []}
+                                    onChange={e => updateStation(index, e)}
+                                    onKeyDown={e => handleKeyDown(index, e)}
+                                />
                             </div>
                             <div className="col-span-1">
                                 <CloseButton onClick={() => deleteRoute(index)} tabIndex={-1} />
