@@ -24,6 +24,16 @@ export default function Route() {
             addRoute(-1);
         }
     };
+    const getLineCompletes = (index: number) => {
+        if (index === 0) {
+            return lineToStations.keys().toArray();
+        }
+
+        const lines = stationToLines.get(routes[index - 1].station) ?? [];
+        const prevLine = routes[index - 1].line;
+
+        return lines.filter(s => s !== prevLine);
+    };
 
     return (
         <>
@@ -41,11 +51,7 @@ export default function Route() {
                                     placeholder="路線"
                                     className="w-3/4"
                                     value={route.line}
-                                    data={
-                                        index === 0
-                                            ? lineToStations.keys().toArray()
-                                            : (stationToLines.get(routes[index - 1].station) ?? [])
-                                    }
+                                    data={getLineCompletes(index)}
                                     onChange={e => updateLine(index, e)}
                                     onKeyDown={e => handleKeyDown(index, e)}
                                 />
