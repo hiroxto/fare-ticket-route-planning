@@ -1,4 +1,6 @@
+// 路線と接続駅のマップ。基本的に会社線は含まない。
 export const lineToStations = new Map<string, string[]>([
+    // 新幹線
     [
         "新幹線",
         [
@@ -78,6 +80,8 @@ export const lineToStations = new Map<string, string[]>([
             "敦賀",
         ],
     ],
+
+    // 在来線 (概ね北から)
     [
         "東北線",
         [
@@ -263,6 +267,7 @@ export const lineToStations = new Map<string, string[]>([
     ["赤穂線", ["相生", "東岡山"]],
 ]);
 
+// 接続駅と路線のマップ
 export const stationToLines = new Map<string, string[]>();
 
 for (const [line, stations] of lineToStations) {
