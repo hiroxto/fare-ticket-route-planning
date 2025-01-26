@@ -13,6 +13,7 @@ export default function Route() {
     const deleteEmptyRoutes = useRouteState(state => state.deleteEmptyRoutes);
     const deleteAllRoutes = useRouteState(state => state.deleteAllRoutes);
     const departure = useRouteState(state => state.departure);
+    const destination = useRouteState(state => state.destination);
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         // 任意の行でShift+Enterを押した場合は下に経路追加
@@ -43,12 +44,34 @@ export default function Route() {
 
         return stations.filter(s => s !== excludeStation);
     };
+    const getStationError = (index: number, station: string) => {
+        const trimmedStation = station.trim();
+        if (trimmedStation === "") return false;
+
+        if (trimmedStation === departure && trimmedStation === destination) {
+            return "発着駅と重複";
+        }
+
+        if (trimmedStation === departure) {
+            return "発駅と重複";
+        }
+
+        if (trimmedStation === destination) {
+            return "着駅と重複";
+        }
+
+        return routes.some((route, idx) => idx !== index && route.station.trim() === trimmedStation)
+            ? "経路内重複"
+            : null;
+    };
 
     return (
         <>
             <div className="col-span-10">
                 <h2 className="section-title">経路</h2>
                 {routes.map((route, index) => {
+                    const stationError = getStationError(index, route.station);
+
                     return (
                         <div className="grid grid-cols-12" key={route.id}>
                             <div className="col-span-1">
@@ -85,6 +108,7 @@ export default function Route() {
                                         className="w-3/4"
                                         value={route.station}
                                         data={getStationCompletes(index)}
+                                        error={stationError}
                                         onChange={e => {
                                             updateStation(index, e);
                                             if (e.trim() !== "" && index === routes.length - 1) {
@@ -95,10 +119,11 @@ export default function Route() {
                                     />
                                 )}
                                 {!useComplete && (
-                                    <Input.Wrapper label="接続駅" className="w-3/4">
+                                    <Input.Wrapper label="接続駅" className="w-3/4" error={stationError}>
                                         <Input
                                             placeholder="接続駅"
                                             value={route.station}
+                                            error={stationError !== null}
                                             onChange={e => updateStation(index, e.target.value)}
                                             onKeyDown={e => handleKeyDown(index, e)}
                                         />
