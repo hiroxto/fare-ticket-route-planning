@@ -37,6 +37,9 @@ export default function Content() {
         () => selectedRouteIds.length === allRouteIds.length,
         [selectedRouteIds, allRouteIds],
     );
+    const [isOpenedDeleteModal, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+    const [routeToDelete, setRouteToDelete] = useState<string | null>(null);
+    const [isOpenedIndividualDeleteModal, { open: openIndividualDeleteModal, close: closeIndividualDeleteModal }] = useDisclosure(false);
 
     return (
         <div className="app">
@@ -53,10 +56,7 @@ export default function Content() {
                             color="red"
                             className="button"
                             disabled={selectedRouteIds.length === 0}
-                            onClick={() => {
-                                bulkDeleteRoute(selectedRouteIds);
-                                setSelectedRouteIds([]);
-                            }}
+                            onClick={openDeleteModal}
                         >
                             削除
                         </Button>
@@ -145,7 +145,10 @@ export default function Content() {
                                             variant="filled"
                                             color="red"
                                             className="button"
-                                            onClick={() => deleteRoute(route.id)}
+                                            onClick={() => {
+                                                setRouteToDelete(route.id);
+                                                openIndividualDeleteModal();
+                                            }}
                                         >
                                             削除
                                         </Button>
@@ -158,6 +161,48 @@ export default function Content() {
 
                 <Modal opened={opened} onClose={close} title="経路参照">
                     <pre className="bg-gray-100 p-5 rounded-md w-10/12">{output}</pre>
+                </Modal>
+
+                <Modal opened={isOpenedDeleteModal} onClose={closeDeleteModal} title="経路の削除">
+                    <p>選択した経路を削除しますか？</p>
+                    <div className="flex justify-end gap-2 mt-4">
+                        <Button variant="light" onClick={closeDeleteModal}>
+                            キャンセル
+                        </Button>
+                        <Button
+                            variant="filled"
+                            color="red"
+                            onClick={() => {
+                                bulkDeleteRoute(selectedRouteIds);
+                                setSelectedRouteIds([]);
+                                closeDeleteModal();
+                            }}
+                        >
+                            削除
+                        </Button>
+                    </div>
+                </Modal>
+
+                <Modal opened={isOpenedIndividualDeleteModal} onClose={closeIndividualDeleteModal} title="経路の削除">
+                    <p>この経路を削除しますか？</p>
+                    <div className="flex justify-end gap-2 mt-4">
+                        <Button variant="light" onClick={closeIndividualDeleteModal}>
+                            キャンセル
+                        </Button>
+                        <Button
+                            variant="filled"
+                            color="red"
+                            onClick={() => {
+                                if (routeToDelete) {
+                                    deleteRoute(routeToDelete);
+                                    setRouteToDelete(null);
+                                }
+                                closeIndividualDeleteModal();
+                            }}
+                        >
+                            削除
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         </div>
