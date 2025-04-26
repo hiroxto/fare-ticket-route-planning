@@ -37,6 +37,7 @@ export default function Setting() {
     const [isOpenedCalenderModel, { open: openCalenderModal, close: closeCalenderModal }] = useDisclosure(false);
     const [calendarValue, setCalendarValue] = useState<Date | null>(null);
     const [isOpenedSaveModel, { open: openSaveModal, close: closeSaveModal }] = useDisclosure(false);
+    const [isOpenedClearSettingModal, { open: openClearSettingModal, close: closeClearSettingModal }] = useDisclosure(false);
 
     return (
         <>
@@ -126,11 +127,7 @@ export default function Setting() {
                     variant="filled"
                     color="red"
                     className="button"
-                    onClick={() => {
-                        resetType();
-                        useDate();
-                        resetStations();
-                    }}
+                    onClick={openClearSettingModal}
                 >
                     設定クリア
                 </Button>
@@ -225,6 +222,26 @@ export default function Setting() {
                     >
                         更新
                     </Button>
+                </Modal>
+                <Modal opened={isOpenedClearSettingModal} onClose={closeClearSettingModal} title="設定のクリア">
+                    <p>設定をクリアしますか？</p>
+                    <div className="flex justify-end gap-2 mt-4">
+                        <Button variant="light" onClick={closeClearSettingModal}>
+                            キャンセル
+                        </Button>
+                        <Button
+                            variant="filled"
+                            color="red"
+                            onClick={() => {
+                                resetType();
+                                useDate();
+                                resetStations();
+                                closeClearSettingModal();
+                            }}
+                        >
+                            クリア
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         </>
