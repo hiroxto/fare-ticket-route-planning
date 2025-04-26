@@ -8,6 +8,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import type { TicketType } from "~/types";
 import "dayjs/locale/ja";
+import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
 
 export default function Setting() {
     const type = useRouteState(state => state.type);
@@ -37,6 +38,12 @@ export default function Setting() {
     const [isOpenedCalenderModel, { open: openCalenderModal, close: closeCalenderModal }] = useDisclosure(false);
     const [calendarValue, setCalendarValue] = useState<Date | null>(null);
     const [isOpenedSaveModel, { open: openSaveModal, close: closeSaveModal }] = useDisclosure(false);
+    const {
+        isOpened: isOpenedClearSettingModal,
+        openModal: openClearSettingModal,
+        closeModal: closeClearSettingModal,
+        handleConfirm: handleClearSettingConfirm,
+    } = useConfirmationModal();
 
     return (
         <>
@@ -126,11 +133,13 @@ export default function Setting() {
                     variant="filled"
                     color="red"
                     className="button"
-                    onClick={() => {
-                        resetType();
-                        useDate();
-                        resetStations();
-                    }}
+                    onClick={() =>
+                        openClearSettingModal(() => {
+                            resetType();
+                            useDate();
+                            resetStations();
+                        })
+                    }
                 >
                     設定クリア
                 </Button>
@@ -226,6 +235,14 @@ export default function Setting() {
                         更新
                     </Button>
                 </Modal>
+                <ConfirmationModal
+                    opened={isOpenedClearSettingModal}
+                    onClose={closeClearSettingModal}
+                    onConfirm={handleClearSettingConfirm}
+                    title="設定のクリア"
+                    message="設定をクリアしますか？"
+                    confirmButtonText="クリア"
+                />
             </div>
         </>
     );

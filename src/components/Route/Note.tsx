@@ -1,3 +1,4 @@
+import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
 import { useRouteState } from "@/feature/route-state";
 import { Button, Textarea } from "@mantine/core";
 import React from "react";
@@ -6,6 +7,12 @@ export default function Note() {
     const notes = useRouteState(state => state.notes);
     const setNotes = useRouteState(state => state.setNotes);
     const resetNotes = useRouteState(state => state.resetNotes);
+    const {
+        isOpened: isOpenedClearNotesModal,
+        openModal: openClearNotesModal,
+        closeModal: closeClearNotesModal,
+        handleConfirm: handleClearNotesConfirm,
+    } = useConfirmationModal();
 
     return (
         <>
@@ -19,9 +26,18 @@ export default function Note() {
                 />
             </div>
             <div className="col-span-2">
-                <Button variant="filled" color="red" className="button" onClick={resetNotes}>
+                <Button variant="filled" color="red" className="button" onClick={() => openClearNotesModal(resetNotes)}>
                     備考クリア
                 </Button>
+
+                <ConfirmationModal
+                    opened={isOpenedClearNotesModal}
+                    onClose={closeClearNotesModal}
+                    onConfirm={handleClearNotesConfirm}
+                    title="備考のクリア"
+                    message="備考をクリアしますか？"
+                    confirmButtonText="クリア"
+                />
             </div>
         </>
     );

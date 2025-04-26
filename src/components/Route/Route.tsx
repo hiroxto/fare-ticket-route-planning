@@ -1,6 +1,8 @@
+import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
 import { useRouteState } from "@/feature/route-state";
 import { lineToStations, stationToLines } from "@/lib/route-complete";
-import { Autocomplete, Button, CloseButton, Group, Input } from "@mantine/core";
+import { Autocomplete, Button, CloseButton, Group, Input, Modal } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import type React from "react";
 import { useState } from "react";
 
@@ -14,6 +16,12 @@ export default function Route() {
     const deleteAllRoutes = useRouteState(state => state.deleteAllRoutes);
     const departure = useRouteState(state => state.departure);
     const destination = useRouteState(state => state.destination);
+    const {
+        isOpened: isOpenedClearAllRoutesModal,
+        openModal: openClearAllRoutesModal,
+        closeModal: closeClearAllRoutesModal,
+        handleConfirm: handleClearAllRoutesConfirm,
+    } = useConfirmationModal();
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         // 任意の行でShift+Enterを押した場合は下に経路追加
@@ -144,7 +152,12 @@ export default function Route() {
                 <Button variant="light" color="red" className="button" onClick={deleteEmptyRoutes}>
                     空経路クリア
                 </Button>
-                <Button variant="filled" color="red" className="button" onClick={deleteAllRoutes}>
+                <Button
+                    variant="filled"
+                    color="red"
+                    className="button"
+                    onClick={() => openClearAllRoutesModal(deleteAllRoutes)}
+                >
                     全経路クリア
                 </Button>
                 <Button
@@ -155,6 +168,15 @@ export default function Route() {
                 >
                     {useComplete ? "補完無効化" : "補完有効化"}
                 </Button>
+
+                <ConfirmationModal
+                    opened={isOpenedClearAllRoutesModal}
+                    onClose={closeClearAllRoutesModal}
+                    onConfirm={handleClearAllRoutesConfirm}
+                    title="全経路のクリア"
+                    message="全経路をクリアしますか？"
+                    confirmButtonText="クリア"
+                />
             </div>
         </>
     );
