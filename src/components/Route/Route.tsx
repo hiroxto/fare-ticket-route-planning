@@ -1,3 +1,4 @@
+import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
 import { useRouteState } from "@/feature/route-state";
 import { lineToStations, stationToLines } from "@/lib/route-complete";
 import { Autocomplete, Button, CloseButton, Group, Input, Modal } from "@mantine/core";
@@ -15,7 +16,12 @@ export default function Route() {
     const deleteAllRoutes = useRouteState(state => state.deleteAllRoutes);
     const departure = useRouteState(state => state.departure);
     const destination = useRouteState(state => state.destination);
-    const [isOpenedClearAllRoutesModal, { open: openClearAllRoutesModal, close: closeClearAllRoutesModal }] = useDisclosure(false);
+    const {
+        isOpened: isOpenedClearAllRoutesModal,
+        openModal: openClearAllRoutesModal,
+        closeModal: closeClearAllRoutesModal,
+        handleConfirm: handleClearAllRoutesConfirm,
+    } = useConfirmationModal();
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         // 任意の行でShift+Enterを押した場合は下に経路追加
@@ -146,7 +152,12 @@ export default function Route() {
                 <Button variant="light" color="red" className="button" onClick={deleteEmptyRoutes}>
                     空経路クリア
                 </Button>
-                <Button variant="filled" color="red" className="button" onClick={openClearAllRoutesModal}>
+                <Button
+                    variant="filled"
+                    color="red"
+                    className="button"
+                    onClick={() => openClearAllRoutesModal(deleteAllRoutes)}
+                >
                     全経路クリア
                 </Button>
                 <Button
@@ -158,24 +169,14 @@ export default function Route() {
                     {useComplete ? "補完無効化" : "補完有効化"}
                 </Button>
 
-                <Modal opened={isOpenedClearAllRoutesModal} onClose={closeClearAllRoutesModal} title="全経路のクリア">
-                    <p>全経路をクリアしますか？</p>
-                    <div className="flex justify-end gap-2 mt-4">
-                        <Button variant="light" onClick={closeClearAllRoutesModal}>
-                            キャンセル
-                        </Button>
-                        <Button
-                            variant="filled"
-                            color="red"
-                            onClick={() => {
-                                deleteAllRoutes();
-                                closeClearAllRoutesModal();
-                            }}
-                        >
-                            クリア
-                        </Button>
-                    </div>
-                </Modal>
+                <ConfirmationModal
+                    opened={isOpenedClearAllRoutesModal}
+                    onClose={closeClearAllRoutesModal}
+                    onConfirm={handleClearAllRoutesConfirm}
+                    title="全経路のクリア"
+                    message="全経路をクリアしますか？"
+                    confirmButtonText="クリア"
+                />
             </div>
         </>
     );

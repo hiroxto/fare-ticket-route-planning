@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
 import { useRouteState } from "@/feature/route-state";
 import { type RouteState, useSavedRouteState } from "@/feature/saved-route";
 import { LikeMr52Formatter } from "@/lib/formatter";
@@ -37,9 +38,20 @@ export default function Content() {
         () => selectedRouteIds.length === allRouteIds.length,
         [selectedRouteIds, allRouteIds],
     );
-    const [isOpenedDeleteModal, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-    const [routeToDelete, setRouteToDelete] = useState<string | null>(null);
-    const [isOpenedIndividualDeleteModal, { open: openIndividualDeleteModal, close: closeIndividualDeleteModal }] = useDisclosure(false);
+
+    const {
+        isOpened: isOpenedBulkDeleteModal,
+        openModal: openBulkDeleteModal,
+        closeModal: closeBulkDeleteModal,
+        handleConfirm: handleBulkDeleteConfirm,
+    } = useConfirmationModal();
+
+    const {
+        isOpened: isOpenedIndividualDeleteModal,
+        openModal: openIndividualDeleteModal,
+        closeModal: closeIndividualDeleteModal,
+        handleConfirm: handleIndividualDeleteConfirm,
+    } = useConfirmationModal();
 
     return (
         <div className="app">
@@ -56,7 +68,12 @@ export default function Content() {
                             color="red"
                             className="button"
                             disabled={selectedRouteIds.length === 0}
-                            onClick={openDeleteModal}
+                            onClick={() =>
+                                openBulkDeleteModal(() => {
+                                    bulkDeleteRoute(selectedRouteIds);
+                                    setSelectedRouteIds([]);
+                                })
+                            }
                         >
                             削除
                         </Button>
@@ -145,10 +162,11 @@ export default function Content() {
                                             variant="filled"
                                             color="red"
                                             className="button"
-                                            onClick={() => {
-                                                setRouteToDelete(route.id);
-                                                openIndividualDeleteModal();
-                                            }}
+                                            onClick={() =>
+                                                openIndividualDeleteModal(() => {
+                                                    deleteRoute(route.id);
+                                                })
+                                            }
                                         >
                                             削除
                                         </Button>
@@ -163,47 +181,23 @@ export default function Content() {
                     <pre className="bg-gray-100 p-5 rounded-md w-10/12">{output}</pre>
                 </Modal>
 
-                <Modal opened={isOpenedDeleteModal} onClose={closeDeleteModal} title="経路の削除">
-                    <p>選択した経路を削除しますか？</p>
-                    <div className="flex justify-end gap-2 mt-4">
-                        <Button variant="light" onClick={closeDeleteModal}>
-                            キャンセル
-                        </Button>
-                        <Button
-                            variant="filled"
-                            color="red"
-                            onClick={() => {
-                                bulkDeleteRoute(selectedRouteIds);
-                                setSelectedRouteIds([]);
-                                closeDeleteModal();
-                            }}
-                        >
-                            削除
-                        </Button>
-                    </div>
-                </Modal>
+                <ConfirmationModal
+                    opened={isOpenedBulkDeleteModal}
+                    onClose={closeBulkDeleteModal}
+                    onConfirm={handleBulkDeleteConfirm}
+                    title="経路の削除"
+                    message="選択した経路を削除しますか？"
+                    confirmButtonText="削除"
+                />
 
-                <Modal opened={isOpenedIndividualDeleteModal} onClose={closeIndividualDeleteModal} title="経路の削除">
-                    <p>この経路を削除しますか？</p>
-                    <div className="flex justify-end gap-2 mt-4">
-                        <Button variant="light" onClick={closeIndividualDeleteModal}>
-                            キャンセル
-                        </Button>
-                        <Button
-                            variant="filled"
-                            color="red"
-                            onClick={() => {
-                                if (routeToDelete) {
-                                    deleteRoute(routeToDelete);
-                                    setRouteToDelete(null);
-                                }
-                                closeIndividualDeleteModal();
-                            }}
-                        >
-                            削除
-                        </Button>
-                    </div>
-                </Modal>
+                <ConfirmationModal
+                    opened={isOpenedIndividualDeleteModal}
+                    onClose={closeIndividualDeleteModal}
+                    onConfirm={handleIndividualDeleteConfirm}
+                    title="経路の削除"
+                    message="この経路を削除しますか？"
+                    confirmButtonText="削除"
+                />
             </div>
         </div>
     );
