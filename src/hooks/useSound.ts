@@ -1,14 +1,23 @@
-import { useRef } from "react";
+import { useRef, useEffect } from 'react';
+
+const audioCache = new Map<string, HTMLAudioElement>();
 
 export const useSound = (soundPath: string) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    const play = () => {
-        if (!audioRef.current) {
-            audioRef.current = new Audio(soundPath);
+    useEffect(() => {
+        if (!audioCache.has(soundPath)) {
+            const audio = new Audio(soundPath);
+            audioCache.set(soundPath, audio);
         }
-        audioRef.current.currentTime = 0;
-        audioRef.current.play();
+        audioRef.current = audioCache.get(soundPath) ?? null;
+    }, [soundPath]);
+
+    const play = () => {
+        if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current.play();
+        }
     };
 
     return play;
