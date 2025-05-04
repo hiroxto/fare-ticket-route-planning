@@ -54,7 +54,7 @@ export default function Route() {
     };
     const getStationError = (index: number, station: string) => {
         const trimmedStation = station.trim();
-        if (trimmedStation === "") return false;
+        if (trimmedStation === "") return null;
 
         if (trimmedStation === departure && trimmedStation === destination) {
             return "発着駅と重複";
