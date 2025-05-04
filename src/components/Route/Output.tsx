@@ -1,8 +1,9 @@
 import { useRouteState } from "@/feature/route-state";
 import { DefaultFormatter, LikeMr52Formatter } from "@/lib/formatter";
-import { Button, CopyButton, Select } from "@mantine/core";
+import { CopyButton, Select } from "@mantine/core";
 import { useMemo, useState } from "react";
 import type { Formatter, Route } from "~/types";
+import { SoundButton } from "@/components/SoundButton";
 
 interface FormatterSet {
     name: string;
@@ -62,9 +63,15 @@ export default function Output() {
             <div className="col-span-2">
                 <CopyButton value={output}>
                     {({ copied, copy }) => (
-                        <Button variant="filled" color={copied ? "blue" : "gray"} onClick={copy} className="button">
+                        <SoundButton
+                            variant="filled"
+                            color={copied ? "blue" : "gray"}
+                            onClick={copy}
+                            className="button"
+                            soundType="success"
+                        >
                             {copied ? "コピー済み" : "コピー"}
-                        </Button>
+                        </SoundButton>
                     )}
                 </CopyButton>
                 <Select

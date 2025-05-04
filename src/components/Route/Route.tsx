@@ -5,6 +5,7 @@ import { Autocomplete, Button, CloseButton, Group, Input, Modal } from "@mantine
 import { useDisclosure } from "@mantine/hooks";
 import type React from "react";
 import { useState } from "react";
+import { SoundButton } from "@/components/SoundButton";
 
 export default function Route() {
     const routes = useRouteState(state => state.routes);
@@ -146,12 +147,12 @@ export default function Route() {
                 })}
             </div>
             <div className="col-span-2">
-                <Button variant="filled" color="gray" className="button" onClick={() => addRoute(-1)}>
+                <SoundButton variant="filled" color="gray" className="button" onClick={() => addRoute(-1)} soundType="click">
                     経路追加
-                </Button>
-                <Button variant="light" color="red" className="button" onClick={deleteEmptyRoutes}>
+                </SoundButton>
+                <SoundButton variant="light" color="red" className="button" onClick={deleteEmptyRoutes} soundType="click">
                     空経路クリア
-                </Button>
+                </SoundButton>
                 <Button
                     variant="filled"
                     color="red"
@@ -160,14 +161,15 @@ export default function Route() {
                 >
                     全経路クリア
                 </Button>
-                <Button
+                <SoundButton
                     variant="filled"
                     color={useComplete ? "gray" : "blue"}
                     className="button"
                     onClick={() => setUseComplete(!useComplete)}
+                    soundType="click"
                 >
                     {useComplete ? "補完無効化" : "補完有効化"}
-                </Button>
+                </SoundButton>
 
                 <ConfirmationModal
                     opened={isOpenedClearAllRoutesModal}
