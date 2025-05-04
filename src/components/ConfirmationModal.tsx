@@ -1,7 +1,7 @@
-import { Button, Modal } from "@mantine/core";
+import { SoundButton } from "@/components/SoundButton";
+import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React, { useState, useEffect } from "react";
-import { useSound } from "@/hooks/useSound";
+import React, { useState } from "react";
 
 interface ConfirmationModalProps {
     opened: boolean;
@@ -24,24 +24,16 @@ export function ConfirmationModal({
     cancelButtonText = "キャンセル",
     confirmButtonColor = "red",
 }: ConfirmationModalProps) {
-    const playSound = useSound('/assets/sounds/maou_se_chime13.mp3');
-
-    useEffect(() => {
-        if (opened) {
-            playSound();
-        }
-    }, [opened, playSound]);
-
     return (
         <Modal opened={opened} onClose={onClose} title={title}>
             <p>{message}</p>
             <div className="flex justify-end gap-2 mt-4">
-                <Button variant="light" onClick={onClose}>
+                <SoundButton variant="light" onClick={onClose} soundType="click">
                     {cancelButtonText}
-                </Button>
-                <Button variant="filled" color={confirmButtonColor} onClick={onConfirm}>
+                </SoundButton>
+                <SoundButton variant="filled" color={confirmButtonColor} onClick={onConfirm} soundType="click">
                     {confirmButtonText}
-                </Button>
+                </SoundButton>
             </div>
         </Modal>
     );

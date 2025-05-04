@@ -1,4 +1,5 @@
 import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
+import { SoundButton } from "@/components/SoundButton";
 import { useRouteState } from "@/feature/route-state";
 import { lineToStations, stationToLines } from "@/lib/route-complete";
 import { Autocomplete, Button, CloseButton, Group, Input, Modal } from "@mantine/core";
@@ -146,28 +147,42 @@ export default function Route() {
                 })}
             </div>
             <div className="col-span-2">
-                <Button variant="filled" color="gray" className="button" onClick={() => addRoute(-1)}>
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => addRoute(-1)}
+                    soundType="click"
+                >
                     経路追加
-                </Button>
-                <Button variant="light" color="red" className="button" onClick={deleteEmptyRoutes}>
+                </SoundButton>
+                <SoundButton
+                    variant="light"
+                    color="red"
+                    className="button"
+                    onClick={deleteEmptyRoutes}
+                    soundType="click"
+                >
                     空経路クリア
-                </Button>
-                <Button
+                </SoundButton>
+                <SoundButton
                     variant="filled"
                     color="red"
                     className="button"
                     onClick={() => openClearAllRoutesModal(deleteAllRoutes)}
+                    soundType="chime"
                 >
                     全経路クリア
-                </Button>
-                <Button
+                </SoundButton>
+                <SoundButton
                     variant="filled"
                     color={useComplete ? "gray" : "blue"}
                     className="button"
                     onClick={() => setUseComplete(!useComplete)}
+                    soundType="click"
                 >
                     {useComplete ? "補完無効化" : "補完有効化"}
-                </Button>
+                </SoundButton>
 
                 <ConfirmationModal
                     opened={isOpenedClearAllRoutesModal}

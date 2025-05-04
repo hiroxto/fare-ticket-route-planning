@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import type { TicketType } from "~/types";
 import "dayjs/locale/ja";
 import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
+import { SoundButton } from "@/components/SoundButton";
 
 export default function Setting() {
     const type = useRouteState(state => state.type);
@@ -108,28 +109,52 @@ export default function Setting() {
                 </div>
             </div>
             <div className="col-span-2">
-                <Button variant="filled" color="gray" className="button" onClick={() => setDateWithIndex(0)}>
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => setDateWithIndex(0)}
+                    soundType="click"
+                >
                     本日
-                </Button>
-                <Button variant="filled" color="gray" className="button" onClick={() => setDateWithIndex(1)}>
+                </SoundButton>
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => setDateWithIndex(1)}
+                    soundType="click"
+                >
                     明日
-                </Button>
-                <Button variant="filled" color="gray" className="button" onClick={() => setDateWithIndex(2)}>
+                </SoundButton>
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => setDateWithIndex(2)}
+                    soundType="click"
+                >
                     明後日
-                </Button>
-                <Button variant="filled" color="gray" className="button" onClick={openCalenderModal}>
+                </SoundButton>
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={openCalenderModal}
+                    soundType="click"
+                >
                     カレンダー入力
-                </Button>
-                <Button variant="filled" color="gray" className="button" onClick={useDate}>
+                </SoundButton>
+                <SoundButton variant="filled" color="gray" className="button" onClick={useDate} soundType="click">
                     利用日表示
-                </Button>
-                <Button variant="filled" color="gray" className="button" onClick={skipDate}>
+                </SoundButton>
+                <SoundButton variant="filled" color="gray" className="button" onClick={skipDate} soundType="click">
                     利用日省略
-                </Button>
-                <Button variant="filled" color="gray" className="button" onClick={reverse}>
+                </SoundButton>
+                <SoundButton variant="filled" color="gray" className="button" onClick={reverse} soundType="click">
                     発着逆転
-                </Button>
-                <Button
+                </SoundButton>
+                <SoundButton
                     variant="filled"
                     color="red"
                     className="button"
@@ -140,15 +165,16 @@ export default function Setting() {
                             resetStations();
                         })
                     }
+                    soundType="chime"
                 >
                     設定クリア
-                </Button>
+                </SoundButton>
                 <Button variant="filled" color="blue" className="button" component={Link} href="/states">
                     保存済み経路
                 </Button>
-                <Button variant="filled" color="blue" className="button" onClick={openSaveModal}>
+                <SoundButton variant="filled" color="blue" className="button" onClick={openSaveModal} soundType="click">
                     保存・更新
-                </Button>
+                </SoundButton>
 
                 <Modal opened={isOpenedCalenderModel} onClose={closeCalenderModal} title="カレンダー入力" size="auto">
                     <DatePicker
@@ -175,7 +201,7 @@ export default function Setting() {
                     />
                 </Modal>
                 <Modal opened={isOpenedSaveModel} onClose={closeSaveModal} title="保存・更新">
-                    <Button
+                    <SoundButton
                         variant="filled"
                         color="blue"
                         className="button"
@@ -195,9 +221,10 @@ export default function Setting() {
                             setSaveToID(null);
                             closeSaveModal();
                         }}
+                        soundType="click"
                     >
                         新規保存
-                    </Button>
+                    </SoundButton>
 
                     <Select
                         label="更新先を選択"
@@ -209,7 +236,7 @@ export default function Setting() {
                         value={saveToID}
                         onChange={value => setSaveToID(value)}
                     />
-                    <Button
+                    <SoundButton
                         variant="filled"
                         color="blue"
                         className="button"
@@ -231,9 +258,10 @@ export default function Setting() {
                             });
                             closeSaveModal();
                         }}
+                        soundType="click"
                     >
                         更新
-                    </Button>
+                    </SoundButton>
                 </Modal>
                 <ConfirmationModal
                     opened={isOpenedClearSettingModal}
