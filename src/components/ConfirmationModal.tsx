@@ -1,7 +1,8 @@
-import { Button, Modal } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useState, useEffect } from "react";
 import { useSound } from "@/hooks/useSound";
+import { SoundButton } from "@/components/SoundButton";
 
 interface ConfirmationModalProps {
     opened: boolean;
@@ -36,12 +37,12 @@ export function ConfirmationModal({
         <Modal opened={opened} onClose={onClose} title={title}>
             <p>{message}</p>
             <div className="flex justify-end gap-2 mt-4">
-                <Button variant="light" onClick={onClose}>
+                <SoundButton variant="light" onClick={onClose} soundType="click">
                     {cancelButtonText}
-                </Button>
-                <Button variant="filled" color={confirmButtonColor} onClick={onConfirm}>
+                </SoundButton>
+                <SoundButton variant="filled" color={confirmButtonColor} onClick={onConfirm} soundType="click">
                     {confirmButtonText}
-                </Button>
+                </SoundButton>
             </div>
         </Modal>
     );
