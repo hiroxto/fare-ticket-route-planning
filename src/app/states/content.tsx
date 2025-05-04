@@ -9,6 +9,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
+import { SoundButton } from "@/components/SoundButton";
 
 export default function Content() {
     const router = useRouter();
@@ -136,7 +137,7 @@ export default function Content() {
                                     <Table.Td>{route.route.departure}</Table.Td>
                                     <Table.Td>{route.route.destination}</Table.Td>
                                     <Table.Td>
-                                        <Button
+                                        <SoundButton
                                             variant="filled"
                                             color="blue"
                                             className="button"
@@ -144,20 +145,22 @@ export default function Content() {
                                                 setSelectedRoute(route.route);
                                                 open();
                                             }}
+                                            soundType="click"
                                         >
                                             経路参照
-                                        </Button>
+                                        </SoundButton>
                                     </Table.Td>
                                     <Table.Td>{route.route.notes}</Table.Td>
                                     <Table.Td>
-                                        <Button
+                                        <SoundButton
                                             variant="filled"
                                             color="blue"
                                             className="button"
                                             onClick={() => callState(route.route)}
+                                            soundType="click"
                                         >
                                             呼び出し
-                                        </Button>
+                                        </SoundButton>
                                         <Button
                                             variant="filled"
                                             color="red"
