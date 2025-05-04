@@ -1,6 +1,6 @@
+import { useSound } from "@/hooks/useSound";
 import { Button } from "@mantine/core";
 import type { ButtonProps } from "@mantine/core";
-import { useSound } from "@/hooks/useSound";
 import { useMemo } from "react";
 
 type SoundType = "click" | "chime" | "success" | "none";

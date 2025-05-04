@@ -1,6 +1,7 @@
 "use client";
 
 import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
+import { SoundButton } from "@/components/SoundButton";
 import { useRouteState } from "@/feature/route-state";
 import { type RouteState, useSavedRouteState } from "@/feature/saved-route";
 import { LikeMr52Formatter } from "@/lib/formatter";
@@ -9,7 +10,6 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
-import { SoundButton } from "@/components/SoundButton";
 
 export default function Content() {
     const router = useRouter();

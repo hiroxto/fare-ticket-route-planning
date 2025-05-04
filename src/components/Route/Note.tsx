@@ -1,4 +1,5 @@
 import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
+import { SoundButton } from "@/components/SoundButton";
 import { useRouteState } from "@/feature/route-state";
 import { Button, Textarea } from "@mantine/core";
 import React from "react";
@@ -26,9 +27,15 @@ export default function Note() {
                 />
             </div>
             <div className="col-span-2">
-                <Button variant="filled" color="red" className="button" onClick={() => openClearNotesModal(resetNotes)}>
+                <SoundButton
+                    variant="filled"
+                    color="red"
+                    className="button"
+                    onClick={() => openClearNotesModal(resetNotes)}
+                    soundType="chime"
+                >
                     備考クリア
-                </Button>
+                </SoundButton>
 
                 <ConfirmationModal
                     opened={isOpenedClearNotesModal}

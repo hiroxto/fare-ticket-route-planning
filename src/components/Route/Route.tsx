@@ -1,11 +1,11 @@
 import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
+import { SoundButton } from "@/components/SoundButton";
 import { useRouteState } from "@/feature/route-state";
 import { lineToStations, stationToLines } from "@/lib/route-complete";
 import { Autocomplete, Button, CloseButton, Group, Input, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import type React from "react";
 import { useState } from "react";
-import { SoundButton } from "@/components/SoundButton";
 
 export default function Route() {
     const routes = useRouteState(state => state.routes);
@@ -147,20 +147,33 @@ export default function Route() {
                 })}
             </div>
             <div className="col-span-2">
-                <SoundButton variant="filled" color="gray" className="button" onClick={() => addRoute(-1)} soundType="click">
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => addRoute(-1)}
+                    soundType="click"
+                >
                     経路追加
                 </SoundButton>
-                <SoundButton variant="light" color="red" className="button" onClick={deleteEmptyRoutes} soundType="click">
+                <SoundButton
+                    variant="light"
+                    color="red"
+                    className="button"
+                    onClick={deleteEmptyRoutes}
+                    soundType="click"
+                >
                     空経路クリア
                 </SoundButton>
-                <Button
+                <SoundButton
                     variant="filled"
                     color="red"
                     className="button"
                     onClick={() => openClearAllRoutesModal(deleteAllRoutes)}
+                    soundType="chime"
                 >
                     全経路クリア
-                </Button>
+                </SoundButton>
                 <SoundButton
                     variant="filled"
                     color={useComplete ? "gray" : "blue"}

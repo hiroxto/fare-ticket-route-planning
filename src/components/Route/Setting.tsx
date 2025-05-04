@@ -109,16 +109,40 @@ export default function Setting() {
                 </div>
             </div>
             <div className="col-span-2">
-                <SoundButton variant="filled" color="gray" className="button" onClick={() => setDateWithIndex(0)} soundType="click">
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => setDateWithIndex(0)}
+                    soundType="click"
+                >
                     本日
                 </SoundButton>
-                <SoundButton variant="filled" color="gray" className="button" onClick={() => setDateWithIndex(1)} soundType="click">
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => setDateWithIndex(1)}
+                    soundType="click"
+                >
                     明日
                 </SoundButton>
-                <SoundButton variant="filled" color="gray" className="button" onClick={() => setDateWithIndex(2)} soundType="click">
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={() => setDateWithIndex(2)}
+                    soundType="click"
+                >
                     明後日
                 </SoundButton>
-                <SoundButton variant="filled" color="gray" className="button" onClick={openCalenderModal} soundType="click">
+                <SoundButton
+                    variant="filled"
+                    color="gray"
+                    className="button"
+                    onClick={openCalenderModal}
+                    soundType="click"
+                >
                     カレンダー入力
                 </SoundButton>
                 <SoundButton variant="filled" color="gray" className="button" onClick={useDate} soundType="click">
@@ -130,7 +154,7 @@ export default function Setting() {
                 <SoundButton variant="filled" color="gray" className="button" onClick={reverse} soundType="click">
                     発着逆転
                 </SoundButton>
-                <Button
+                <SoundButton
                     variant="filled"
                     color="red"
                     className="button"
@@ -141,9 +165,10 @@ export default function Setting() {
                             resetStations();
                         })
                     }
+                    soundType="chime"
                 >
                     設定クリア
-                </Button>
+                </SoundButton>
                 <Button variant="filled" color="blue" className="button" component={Link} href="/states">
                     保存済み経路
                 </Button>

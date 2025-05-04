@@ -1,9 +1,9 @@
+import { SoundButton } from "@/components/SoundButton";
 import { useRouteState } from "@/feature/route-state";
 import { DefaultFormatter, LikeMr52Formatter } from "@/lib/formatter";
 import { CopyButton, Select } from "@mantine/core";
 import { useMemo, useState } from "react";
 import type { Formatter, Route } from "~/types";
-import { SoundButton } from "@/components/SoundButton";
 
 interface FormatterSet {
     name: string;
