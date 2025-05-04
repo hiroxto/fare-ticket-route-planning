@@ -1,6 +1,7 @@
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSound } from "@/hooks/useSound";
 
 interface ConfirmationModalProps {
     opened: boolean;
@@ -23,6 +24,14 @@ export function ConfirmationModal({
     cancelButtonText = "キャンセル",
     confirmButtonColor = "red",
 }: ConfirmationModalProps) {
+    const playSound = useSound('/assets/sounds/maou_se_chime13.mp3');
+
+    useEffect(() => {
+        if (opened) {
+            playSound();
+        }
+    }, [opened, playSound]);
+
     return (
         <Modal opened={opened} onClose={onClose} title={title}>
             <p>{message}</p>

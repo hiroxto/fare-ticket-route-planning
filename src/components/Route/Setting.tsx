@@ -8,7 +8,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import type { TicketType } from "~/types";
 import "dayjs/locale/ja";
-import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
+import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
 
 export default function Setting() {
     const type = useRouteState(state => state.type);

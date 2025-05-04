@@ -1,6 +1,6 @@
 "use client";
 
-import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
+import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
 import { useRouteState } from "@/feature/route-state";
 import { type RouteState, useSavedRouteState } from "@/feature/saved-route";
 import { LikeMr52Formatter } from "@/lib/formatter";
