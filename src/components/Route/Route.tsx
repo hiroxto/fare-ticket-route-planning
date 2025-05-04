@@ -1,4 +1,4 @@
-import { ConfirmationModal, useConfirmationModal } from "@/components/DeleteConfirmationModal";
+import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
 import { useRouteState } from "@/feature/route-state";
 import { lineToStations, stationToLines } from "@/lib/route-complete";
 import { Autocomplete, Button, CloseButton, Group, Input, Modal } from "@mantine/core";
