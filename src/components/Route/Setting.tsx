@@ -147,9 +147,9 @@ export default function Setting() {
                 <Button variant="filled" color="blue" className="button" component={Link} href="/states">
                     保存済み経路
                 </Button>
-                <Button variant="filled" color="blue" className="button" onClick={openSaveModal}>
+                <SoundButton variant="filled" color="blue" className="button" onClick={openSaveModal} soundType="click">
                     保存・更新
-                </Button>
+                </SoundButton>
 
                 <Modal opened={isOpenedCalenderModel} onClose={closeCalenderModal} title="カレンダー入力" size="auto">
                     <DatePicker
@@ -176,7 +176,7 @@ export default function Setting() {
                     />
                 </Modal>
                 <Modal opened={isOpenedSaveModel} onClose={closeSaveModal} title="保存・更新">
-                    <Button
+                    <SoundButton
                         variant="filled"
                         color="blue"
                         className="button"
@@ -196,9 +196,10 @@ export default function Setting() {
                             setSaveToID(null);
                             closeSaveModal();
                         }}
+                        soundType="click"
                     >
                         新規保存
-                    </Button>
+                    </SoundButton>
 
                     <Select
                         label="更新先を選択"
@@ -210,7 +211,7 @@ export default function Setting() {
                         value={saveToID}
                         onChange={value => setSaveToID(value)}
                     />
-                    <Button
+                    <SoundButton
                         variant="filled"
                         color="blue"
                         className="button"
@@ -232,9 +233,10 @@ export default function Setting() {
                             });
                             closeSaveModal();
                         }}
+                        soundType="click"
                     >
                         更新
-                    </Button>
+                    </SoundButton>
                 </Modal>
                 <ConfirmationModal
                     opened={isOpenedClearSettingModal}
