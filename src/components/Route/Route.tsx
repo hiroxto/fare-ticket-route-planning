@@ -76,7 +76,7 @@ export default function Route() {
 
     return (
         <>
-            <div className="col-span-10">
+            <div className="col-span-8">
                 <h2 className="section-title">経路</h2>
                 {routes.map((route, index) => {
                     const stationError = getStationError(index, route.station);
@@ -146,7 +146,7 @@ export default function Route() {
                     );
                 })}
             </div>
-            <div className="col-span-2">
+            <div className="col-span-4">
                 <SoundButton
                     variant="filled"
                     color="gray"

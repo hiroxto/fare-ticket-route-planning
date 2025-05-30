@@ -17,7 +17,7 @@ export default function Note() {
 
     return (
         <>
-            <div className="col-span-10">
+            <div className="col-span-8">
                 <h2 className="section-title">備考</h2>
                 <Textarea
                     placeholder="備考"
@@ -26,7 +26,7 @@ export default function Note() {
                     className="w-10/12"
                 />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-4">
                 <SoundButton
                     variant="filled"
                     color="red"

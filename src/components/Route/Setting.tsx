@@ -48,7 +48,7 @@ export default function Setting() {
 
     return (
         <>
-            <div className="col-span-10">
+            <div className="col-span-8">
                 <h2 className="section-title">設定</h2>
 
                 <div className="grid grid-cols-12">
@@ -108,7 +108,7 @@ export default function Setting() {
                     </div>
                 </div>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-4">
                 <SoundButton
                     variant="filled"
                     color="gray"

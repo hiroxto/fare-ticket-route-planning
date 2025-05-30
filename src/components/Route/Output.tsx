@@ -53,14 +53,14 @@ export default function Output() {
 
     return (
         <>
-            <div className="col-span-10">
+            <div className="col-span-8">
                 <h2 className="section-title">出力</h2>
 
                 <pre className="bg-gray-100 p-5 rounded-md w-10/12 whitespace-pre">
                     <span className="whitespace-pre-wrap">{output}</span>
                 </pre>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-4">
                 <CopyButton value={output}>
                     {({ copied, copy }) => (
                         <SoundButton
