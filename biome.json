@@ -23,6 +23,10 @@
             "recommended": true,
             "style": {
                 "useSelfClosingElements": "off"
+            },
+            "correctness": {
+                "noUnusedImports": "warn",
+                "noUnusedVariables": "warn"
             }
         }
     },
