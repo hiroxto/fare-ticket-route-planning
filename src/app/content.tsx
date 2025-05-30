@@ -1,10 +1,10 @@
 "use client";
 
+import ControlButtons from "@/components/Route/ControlButtons";
 import Note from "@/components/Route/Note";
 import Output from "@/components/Route/Output";
 import Route from "@/components/Route/Route";
 import Setting from "@/components/Route/Setting";
-import React from "react";
 
 export default function Content() {
     return (
@@ -16,13 +16,18 @@ export default function Content() {
                 </div>
 
                 <div className="grid grid-cols-12 xl:gap-4">
-                    <Setting></Setting>
+                    <div className="col-span-8">
+                        <Setting></Setting>
 
-                    <Route></Route>
+                        <Route></Route>
 
-                    <Note></Note>
+                        <Note></Note>
 
-                    <Output></Output>
+                        <Output></Output>
+                    </div>
+                    <div className="col-span-4">
+                        <ControlButtons></ControlButtons>
+                    </div>
                 </div>
             </div>
         </div>

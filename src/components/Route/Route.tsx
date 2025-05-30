@@ -1,11 +1,8 @@
-import { ConfirmationModal, useConfirmationModal } from "@/components/ConfirmationModal";
-import { SoundButton } from "@/components/SoundButton";
+import { useInputSettingStore } from "@/feature/input-setting";
 import { useRouteState } from "@/feature/route-state";
 import { lineToStations, stationToLines } from "@/lib/route-complete";
-import { Autocomplete, Button, CloseButton, Group, Input, Modal } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Autocomplete, CloseButton, Input } from "@mantine/core";
 import type React from "react";
-import { useState } from "react";
 
 export default function Route() {
     const routes = useRouteState(state => state.routes);
@@ -13,16 +10,9 @@ export default function Route() {
     const updateLine = useRouteState(state => state.updateLine);
     const updateStation = useRouteState(state => state.updateStation);
     const deleteRoute = useRouteState(state => state.deleteRoute);
-    const deleteEmptyRoutes = useRouteState(state => state.deleteEmptyRoutes);
-    const deleteAllRoutes = useRouteState(state => state.deleteAllRoutes);
     const departure = useRouteState(state => state.departure);
     const destination = useRouteState(state => state.destination);
-    const {
-        isOpened: isOpenedClearAllRoutesModal,
-        openModal: openClearAllRoutesModal,
-        closeModal: closeClearAllRoutesModal,
-        handleConfirm: handleClearAllRoutesConfirm,
-    } = useConfirmationModal();
+    const useComplete = useInputSettingStore(state => state.useComplete);
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         // 任意の行でShift+Enterを押した場合は下に経路追加
@@ -36,7 +26,6 @@ export default function Route() {
             addRoute(-1);
         }
     };
-    const [useComplete, setUseComplete] = useState<boolean>(true);
     const getLineCompletes = (index: number) => {
         if (index === 0) {
             return stationToLines.get(departure) ?? lineToStations.keys().toArray();
@@ -76,123 +65,74 @@ export default function Route() {
 
     return (
         <>
-            <div className="col-span-8">
-                <h2 className="section-title">経路</h2>
-                {routes.map((route, index) => {
-                    const stationError = getStationError(index, route.station);
+            <h2 className="section-title">経路</h2>
+            {routes.map((route, index) => {
+                const stationError = getStationError(index, route.station);
 
-                    return (
-                        <div className="grid grid-cols-12" key={route.id}>
-                            <div className="col-span-1">
-                                <p>経路{index + 1}</p>
-                            </div>
-                            <div className="col-span-5">
-                                {useComplete && (
-                                    <Autocomplete
-                                        label="路線"
-                                        placeholder="路線"
-                                        className="w-3/4"
-                                        value={route.line}
-                                        data={getLineCompletes(index)}
-                                        onChange={e => updateLine(index, e)}
-                                        onKeyDown={e => handleKeyDown(index, e)}
-                                    />
-                                )}
-                                {!useComplete && (
-                                    <Input.Wrapper label="路線" className="w-3/4">
-                                        <Input
-                                            placeholder="路線"
-                                            value={route.line}
-                                            onChange={e => updateLine(index, e.target.value)}
-                                            onKeyDown={e => handleKeyDown(index, e)}
-                                        />
-                                    </Input.Wrapper>
-                                )}
-                            </div>
-                            <div className="col-span-5">
-                                {useComplete && (
-                                    <Autocomplete
-                                        label="接続駅"
-                                        placeholder="接続駅"
-                                        className="w-3/4"
-                                        value={route.station}
-                                        data={getStationCompletes(index)}
-                                        error={stationError}
-                                        onChange={e => {
-                                            updateStation(index, e);
-                                            if (e.trim() !== "" && index === routes.length - 1) {
-                                                addRoute(-1);
-                                            }
-                                        }}
-                                        onKeyDown={e => handleKeyDown(index, e)}
-                                    />
-                                )}
-                                {!useComplete && (
-                                    <Input.Wrapper label="接続駅" className="w-3/4" error={stationError}>
-                                        <Input
-                                            placeholder="接続駅"
-                                            value={route.station}
-                                            error={stationError !== null}
-                                            onChange={e => updateStation(index, e.target.value)}
-                                            onKeyDown={e => handleKeyDown(index, e)}
-                                        />
-                                    </Input.Wrapper>
-                                )}
-                            </div>
-                            <div className="col-span-1">
-                                <CloseButton onClick={() => deleteRoute(index)} tabIndex={-1} />
-                            </div>
+                return (
+                    <div className="grid grid-cols-12" key={route.id}>
+                        <div className="col-span-1">
+                            <p>経路{index + 1}</p>
                         </div>
-                    );
-                })}
-            </div>
-            <div className="col-span-4">
-                <SoundButton
-                    variant="filled"
-                    color="gray"
-                    className="button"
-                    onClick={() => addRoute(-1)}
-                    soundType="click"
-                >
-                    経路追加
-                </SoundButton>
-                <SoundButton
-                    variant="light"
-                    color="red"
-                    className="button"
-                    onClick={deleteEmptyRoutes}
-                    soundType="click"
-                >
-                    空経路クリア
-                </SoundButton>
-                <SoundButton
-                    variant="filled"
-                    color="red"
-                    className="button"
-                    onClick={() => openClearAllRoutesModal(deleteAllRoutes)}
-                    soundType="chime"
-                >
-                    全経路クリア
-                </SoundButton>
-                <SoundButton
-                    variant="filled"
-                    color={useComplete ? "gray" : "blue"}
-                    className="button"
-                    onClick={() => setUseComplete(!useComplete)}
-                    soundType="click"
-                >
-                    {useComplete ? "補完無効化" : "補完有効化"}
-                </SoundButton>
-
-                <ConfirmationModal
-                    opened={isOpenedClearAllRoutesModal}
-                    onClose={closeClearAllRoutesModal}
-                    onConfirm={handleClearAllRoutesConfirm}
-                    title="全経路のクリア"
-                    message="全経路をクリアしますか？"
-                    confirmButtonText="クリア"
-                />
-            </div>
+                        <div className="col-span-5">
+                            {useComplete && (
+                                <Autocomplete
+                                    label="路線"
+                                    placeholder="路線"
+                                    className="w-3/4"
+                                    value={route.line}
+                                    data={getLineCompletes(index)}
+                                    onChange={e => updateLine(index, e)}
+                                    onKeyDown={e => handleKeyDown(index, e)}
+                                />
+                            )}
+                            {!useComplete && (
+                                <Input.Wrapper label="路線" className="w-3/4">
+                                    <Input
+                                        placeholder="路線"
+                                        value={route.line}
+                                        onChange={e => updateLine(index, e.target.value)}
+                                        onKeyDown={e => handleKeyDown(index, e)}
+                                    />
+                                </Input.Wrapper>
+                            )}
+                        </div>
+                        <div className="col-span-5">
+                            {useComplete && (
+                                <Autocomplete
+                                    label="接続駅"
+                                    placeholder="接続駅"
+                                    className="w-3/4"
+                                    value={route.station}
+                                    data={getStationCompletes(index)}
+                                    error={stationError}
+                                    onChange={e => {
+                                        updateStation(index, e);
+                                        if (e.trim() !== "" && index === routes.length - 1) {
+                                            addRoute(-1);
+                                        }
+                                    }}
+                                    onKeyDown={e => handleKeyDown(index, e)}
+                                />
+                            )}
+                            {!useComplete && (
+                                <Input.Wrapper label="接続駅" className="w-3/4" error={stationError}>
+                                    <Input
+                                        placeholder="接続駅"
+                                        value={route.station}
+                                        error={stationError !== null}
+                                        onChange={e => updateStation(index, e.target.value)}
+                                        onKeyDown={e => handleKeyDown(index, e)}
+                                    />
+                                </Input.Wrapper>
+                            )}
+                        </div>
+                        <div className="col-span-1">
+                            <CloseButton onClick={() => deleteRoute(index)} tabIndex={-1} />
+                        </div>
+                    </div>
+                );
+            })}
         </>
     );
 }
