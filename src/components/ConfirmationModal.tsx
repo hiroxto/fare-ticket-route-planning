@@ -1,7 +1,7 @@
 import { SoundButton } from "@/components/SoundButton";
 import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface ConfirmationModalProps {
     opened: boolean;
