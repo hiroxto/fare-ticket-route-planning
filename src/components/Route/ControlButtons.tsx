@@ -1,6 +1,6 @@
 import { useRouteState } from "@/feature/route-state";
 import { useSavedRouteState } from "@/feature/saved-route";
-import { Button, Modal, Select } from "@mantine/core";
+import { Button, Grid, Modal, Select } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
@@ -24,7 +24,6 @@ export default function ControlButtons() {
     const setDay = useRouteState(state => state.setDay);
     const setDateWithIndex = useRouteState(state => state.setDateWithIndex);
     const useDate = useRouteState(state => state.useDate);
-    const _skipDate = useRouteState(state => state.skipDate);
     const reverse = useRouteState(state => state.reverse);
     const resetStations = useRouteState(state => state.resetStations);
     const savedRoutes = useSavedRouteState(state => state.routes);
@@ -40,7 +39,6 @@ export default function ControlButtons() {
         closeModal: closeClearSettingModal,
         handleConfirm: handleClearSettingConfirm,
     } = useConfirmationModal();
-
     const addRoute = useRouteState(state => state.addRoute);
     const deleteEmptyRoutes = useRouteState(state => state.deleteEmptyRoutes);
     const deleteAllRoutes = useRouteState(state => state.deleteAllRoutes);
@@ -63,124 +61,172 @@ export default function ControlButtons() {
 
     return (
         <>
-            <Button.Group>
-                <SoundButton
-                    variant="filled"
-                    color="gray"
-                    className="button"
-                    onClick={() => setDateWithIndex(0)}
-                    soundType="click"
-                >
-                    本日
-                </SoundButton>
-                <SoundButton
-                    variant="filled"
-                    color="gray"
-                    className="button"
-                    onClick={() => setDateWithIndex(1)}
-                    soundType="click"
-                >
-                    明日
-                </SoundButton>
-                <SoundButton
-                    variant="filled"
-                    color="gray"
-                    className="button"
-                    onClick={() => setDateWithIndex(2)}
-                    soundType="click"
-                >
-                    明後日
-                </SoundButton>
-                <SoundButton
-                    variant="filled"
-                    color="gray"
-                    className="button"
-                    onClick={openCalenderModal}
-                    soundType="click"
-                >
-                    カレンダー入力
-                </SoundButton>
-            </Button.Group>
-
-            <Button.Group>
-                <SoundButton variant="filled" color="gray" className="button" onClick={reverse} soundType="click">
-                    発着逆転
-                </SoundButton>
-                <SoundButton
-                    variant="filled"
-                    color={useComplete ? "gray" : "blue"}
-                    className="button"
-                    onClick={() => (useComplete ? disableComplete() : enableComplete())}
-                    soundType="click"
-                >
-                    {useComplete ? "補完無効化" : "補完有効化"}
-                </SoundButton>
-
-                <SoundButton
-                    variant="filled"
-                    color="gray"
-                    className="button"
-                    onClick={() => addRoute(-1)}
-                    soundType="click"
-                >
-                    経路追加
-                </SoundButton>
-                <SoundButton
-                    variant="light"
-                    color="red"
-                    className="button"
-                    onClick={deleteEmptyRoutes}
-                    soundType="click"
-                >
-                    空経路クリア
-                </SoundButton>
-            </Button.Group>
-
-            <Button.Group>
-                <SoundButton
-                    variant="filled"
-                    color="red"
-                    className="button"
-                    onClick={() =>
-                        openClearSettingModal(() => {
-                            resetType();
-                            useDate();
-                            resetStations();
-                        })
-                    }
-                    soundType="chime"
-                >
-                    設定クリア
-                </SoundButton>
-
-                <SoundButton
-                    variant="filled"
-                    color="red"
-                    className="button"
-                    onClick={() => openClearAllRoutesModal(deleteAllRoutes)}
-                    soundType="chime"
-                >
-                    全経路クリア
-                </SoundButton>
-                <SoundButton
-                    variant="filled"
-                    color="red"
-                    className="button"
-                    onClick={() => openClearNotesModal(resetNotes)}
-                    soundType="chime"
-                >
-                    備考クリア
-                </SoundButton>
-            </Button.Group>
-
-            <Button.Group>
-                <Button variant="filled" color="blue" className="button" component={Link} href="/states">
-                    保存済み経路
-                </Button>
-                <SoundButton variant="filled" color="blue" className="button" onClick={openSaveModal} soundType="click">
-                    保存・更新
-                </SoundButton>
-            </Button.Group>
+            <Grid columns={12} gutter="xs">
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="gray"
+                        className="button"
+                        onClick={() => setDateWithIndex(0)}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        本日
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="gray"
+                        className="button"
+                        onClick={() => setDateWithIndex(1)}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        明日
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="gray"
+                        className="button "
+                        onClick={() => setDateWithIndex(2)}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        明後日
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="gray"
+                        className="button"
+                        onClick={openCalenderModal}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        カレンダー入力
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="gray"
+                        className="button"
+                        onClick={reverse}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        発着逆転
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="gray"
+                        className="button"
+                        onClick={() => addRoute(-1)}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        経路追加
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}></Grid.Col>
+                <Grid.Col span={3}></Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="light"
+                        color="red"
+                        className="button"
+                        onClick={deleteEmptyRoutes}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        空経路クリア
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="red"
+                        className="button"
+                        onClick={() =>
+                            openClearSettingModal(() => {
+                                resetType();
+                                useDate();
+                                resetStations();
+                            })
+                        }
+                        soundType="chime"
+                        fullWidth={true}
+                    >
+                        設定クリア
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="red"
+                        className="button"
+                        onClick={() => openClearAllRoutesModal(deleteAllRoutes)}
+                        soundType="chime"
+                        fullWidth={true}
+                    >
+                        全経路クリア
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="red"
+                        className="button"
+                        onClick={() => openClearNotesModal(resetNotes)}
+                        soundType="chime"
+                        fullWidth={true}
+                    >
+                        備考クリア
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color={useComplete ? "gray" : "blue"}
+                        className="button"
+                        onClick={() => (useComplete ? disableComplete() : enableComplete())}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        {useComplete ? "補完無効化" : "補完有効化"}
+                    </SoundButton>
+                </Grid.Col>
+                <Grid.Col span={3} offset={3}>
+                    <Button
+                        variant="filled"
+                        color="blue"
+                        className="button"
+                        component={Link}
+                        href="/states"
+                        fullWidth={true}
+                    >
+                        保存済み経路
+                    </Button>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <SoundButton
+                        variant="filled"
+                        color="blue"
+                        className="button"
+                        onClick={openSaveModal}
+                        soundType="click"
+                        fullWidth={true}
+                    >
+                        保存・更新
+                    </SoundButton>
+                </Grid.Col>
+            </Grid>
 
             <Modal opened={isOpenedCalenderModel} onClose={closeCalenderModal} title="カレンダー入力" size="auto">
                 <DatePicker
