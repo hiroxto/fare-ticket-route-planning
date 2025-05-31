@@ -4,7 +4,7 @@ import { ConfirmationModal, useConfirmationModal } from "@/components/Confirmati
 import { SoundButton } from "@/components/SoundButton";
 import { useRouteState } from "@/feature/route-state";
 import { type RouteState, useSavedRouteState } from "@/feature/saved-route";
-import { LikeMr52Formatter } from "@/lib/formatter";
+import { format } from "@/lib/formatter";
 import { Button, Checkbox, Group, Modal, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
@@ -24,8 +24,7 @@ export default function Content() {
             return "";
         }
 
-        const formatter = new LikeMr52Formatter(selectedRoute.routes);
-        const routesOutput = formatter.format();
+        const routesOutput = format(selectedRoute.routes);
 
         return `${selectedRoute.departure} → ${selectedRoute.destination}\n\n${routesOutput}`.trim();
     }, [selectedRoute]);

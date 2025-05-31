@@ -1,5 +1,5 @@
 import { useRouteState } from "@/feature/route-state";
-import { LikeMr52Formatter } from "@/lib/formatter";
+import { format } from "@/lib/formatter";
 import { useMemo } from "react";
 
 export default function Output() {
@@ -22,7 +22,7 @@ export default function Output() {
             .filter(el => el != null)
             .join("\n\n");
 
-        const routesOutput = new LikeMr52Formatter(valuedRoutes).format();
+        const routesOutput = format(valuedRoutes);
         const footer = notes === "" ? "" : `備考: ${notes.trim()}`;
 
         return `${header}\n\n${routesOutput}\n\n${footer}`.trim();

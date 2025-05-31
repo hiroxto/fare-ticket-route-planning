@@ -1,21 +1,13 @@
 import type { Route } from "~/types";
 
-export class LikeMr52Formatter {
-    private readonly routes: Route[];
-
-    constructor(routes: Route[]) {
-        this.routes = routes;
+export const format = (routes: Route[]): string => {
+    if (routes.length === 0) {
+        return "";
     }
 
-    format(): string {
-        return this.routes.length === 0 ? "" : this.createRoutesOutput();
-    }
+    const exceptLastRoutes = routes.slice(0, routes.length - 1);
+    const lastRoute = routes.slice(-1)[0];
+    const output = `${exceptLastRoutes.map(route => `${route.line}\n     ${route.station}\n`).join("")}${lastRoute.line}`;
 
-    createRoutesOutput(): string {
-        const exceptLastRoutes = this.routes.slice(0, this.routes.length - 1);
-        const lastRoute = this.routes.slice(-1)[0];
-        const output = `${exceptLastRoutes.map(route => `${route.line}\n     ${route.station}\n`).join("")}${lastRoute.line}`;
-
-        return output.trim();
-    }
-}
+    return output.trim();
+};
