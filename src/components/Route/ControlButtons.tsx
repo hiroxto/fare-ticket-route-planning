@@ -232,18 +232,19 @@ export default function ControlButtons() {
                 <DatePicker
                     value={calendarValue}
                     onChange={newValue => {
+                        const newValueDate = newValue === null ? null : new Date(newValue);
                         if (
                             calendarValue !== null &&
-                            newValue !== null &&
-                            calendarValue?.getMonth() === newValue?.getMonth() &&
-                            calendarValue?.getDay() === newValue?.getDay()
+                            newValueDate !== null &&
+                            calendarValue.getMonth() === newValueDate.getMonth() &&
+                            calendarValue.getDay() === newValueDate.getDay()
                         ) {
-                            setMonth(String(newValue.getMonth() + 1));
-                            setDay(String(newValue.getDate()));
+                            setMonth(String(newValueDate.getMonth() + 1));
+                            setDay(String(newValueDate.getDate()));
                             closeCalenderModal();
                         }
 
-                        setCalendarValue(newValue);
+                        setCalendarValue(newValueDate);
                     }}
                     firstDayOfWeek={0}
                     locale="ja"
