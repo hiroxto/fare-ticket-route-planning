@@ -3,7 +3,7 @@ import { DatesProvider } from "@mantine/dates";
 import type { Metadata } from "next";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
-import "./globals.scss";
+import "./globals.css";
 
 export const metadata: Metadata = {
     title: "Next App",
