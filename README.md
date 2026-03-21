@@ -1,3 +1,12 @@
+# fare-ticket-route-planning
+
+乗車券のルート作成ツール
+
+> [!NOTE]
+> [hiroxto/hiroxto.net](https://github.com/hiroxto/hiroxto.net)へ統合しました。
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
